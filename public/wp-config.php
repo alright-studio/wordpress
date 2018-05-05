@@ -7,12 +7,6 @@ if ($_SERVER['REMOTE_ADDR'] == '127.0.0.1' || $_SERVER['REMOTE_ADDR'] == '::1') 
     $dotenv->load();
 }
 
-/** Sets the Site URL for local development */
-if ($_SERVER['REMOTE_ADDR'] == '127.0.0.1' || $_SERVER['REMOTE_ADDR'] == '::1') { 
-    define('WP_SITEURL', getenv('WP_SITEURL'));
-    define('WP_HOME', getenv('WP_HOME'));
-}
-
 /** The base configuration for WordPress */
 define('DB_NAME', getenv('MYSQL_DATABASE'));
 define('DB_USER', getenv('MYSQL_USER'));
@@ -30,6 +24,13 @@ define('AUTH_SALT', getenv('AUTH_SALT'));
 define('SECURE_AUTH_SALT', getenv('SECURE_AUTH_SALT'));
 define('LOGGED_IN_SALT', getenv('LOGGED_IN_SALT'));
 define('NONCE_SALT', getenv('NONCE_SALT'));
+
+/** Content Directory and Change Site URL for other environments */
+$protocol = isset($_SERVER["HTTPS"]) ? 'https://' : 'http://';
+define('WP_CONTENT_DIR', __DIR__ . '/wp-content');
+define('WP_CONTENT_URL', $protocol . $_SERVER['SERVER_NAME'] . '/wp-content');
+define('WP_SITEURL', $protocol . $_SERVER['SERVER_NAME'] . '/wp');
+define('WP_HOME', $protocol . $_SERVER['SERVER_NAME']);
 
 /** WordPress Database Table prefix. */
 $table_prefix  = 'wp_';
